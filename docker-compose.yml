@@ -1,0 +1,16 @@
+services:
+  xray:
+    build: .
+    container_name: xray-vmess
+    restart: unless-stopped
+    environment:
+      - TZ=UTC
+    ports:
+      - "443:8443"
+    volumes:
+      - ./config.json:/etc/xray/config.json:ro
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
