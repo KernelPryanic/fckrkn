@@ -13,6 +13,12 @@ A simple setup to f*ck roskomposor and censorship overall, that you can (and sho
    - `YOUR_SUBDOMAIN` → your [DuckDNS](https://www.duckdns.org/) subdomain
    - `00000000-0000-0000-0000-000000000000` → your generated UUID
 
+## Build
+
+```
+docker compose build --no-cache
+```
+
 ## Run
 
 ```
