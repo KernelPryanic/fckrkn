@@ -11,6 +11,6 @@ RUN mkdir -p /etc/ssl/certs/xray && \
       -subj "/CN=disk.yandex.ru" \
       -addext "subjectAltName=DNS:disk.yandex.ru,DNS:yandex.ru"
 
-EXPOSE 8443 51820/udp 8080 8880
+EXPOSE 8443 51820/udp 8080 8880 2096
 
 CMD ["xray", "-c", "/etc/xray/config.json"]

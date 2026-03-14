@@ -31,7 +31,7 @@
   },
   "inbounds": [
     {
-      "tag": "vmess-xhttp-tls",
+      "tag": "vmess-ws-tls",
       "port": 8080,
       "protocol": "vmess",
       "settings": {
@@ -43,16 +43,15 @@
         ]
       },
       "streamSettings": {
-        "network": "xhttp",
+        "network": "ws",
         "security": "tls",
-        "xhttpSettings": {
+        "wsSettings": {
           "path": "/v1/disk/resources/download",
-          "host": "disk.yandex.ru",
-          "mode": "auto"
+          "host": "disk.yandex.ru"
         },
         "tlsSettings": {
           "serverName": "disk.yandex.ru",
-          "alpn": ["h2"],
+          "alpn": ["h2", "http/1.1"],
           "certificates": [
             {
               "certificateFile": "/etc/ssl/certs/xray/fullchain.pem",
@@ -132,7 +131,7 @@
       }
     },
     {
-      "tag": "trojan-xhttp-tls",
+      "tag": "trojan-grpc-tls",
       "port": 8880,
       "protocol": "trojan",
       "settings": {
@@ -143,14 +142,51 @@
         ]
       },
       "streamSettings": {
-        "network": "xhttp",
+        "network": "grpc",
         "security": "tls",
-        "xhttpSettings": {
-          "path": "/trojan-xh",
-          "mode": "auto"
+        "grpcSettings": {
+          "serviceName": "trojan-grpc"
         },
         "tlsSettings": {
+          "serverName": "api.yandex.net",
           "alpn": ["h2"],
+          "certificates": [
+            {
+              "certificateFile": "/etc/ssl/certs/xray/fullchain.pem",
+              "keyFile": "/etc/ssl/certs/xray/privkey.pem"
+            }
+          ]
+        },
+        "sockopt": {
+          "tcpFastOpen": true,
+          "tcpKeepAliveInterval": 30
+        }
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": ["http", "tls"]
+      }
+    },
+    {
+      "tag": "trojan-ws-tls",
+      "port": 2096,
+      "protocol": "trojan",
+      "settings": {
+        "clients": [
+          {
+            "password": "YOUR_TROJAN_PASSWORD"
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "ws",
+        "security": "tls",
+        "wsSettings": {
+          "path": "/v1/notifications/stream"
+        },
+        "tlsSettings": {
+          "serverName": "push.yandex.ru",
+          "alpn": ["h2", "http/1.1"],
           "certificates": [
             {
               "certificateFile": "/etc/ssl/certs/xray/fullchain.pem",
@@ -194,4 +230,3 @@
     ]
   }
 }
-

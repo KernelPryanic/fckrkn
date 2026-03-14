@@ -10,6 +10,7 @@ services:
       - "51820:51820/udp"
       - "8080:8080"
       - "8880:8880"
+      - "2096:2096"
     volumes:
       - ./config.json:/etc/xray/config.json:ro
     logging:
