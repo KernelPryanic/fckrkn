@@ -8,9 +8,9 @@ RUN mkdir -p /etc/ssl/certs/xray && \
       -keyout /etc/ssl/certs/xray/privkey.pem \
       -out /etc/ssl/certs/xray/fullchain.pem \
       -days 3650 \
-      -subj "/CN=YOUR_SUBDOMAIN.duckdns.org" \
-      -addext "subjectAltName=DNS:YOUR_SUBDOMAIN.duckdns.org"
+      -subj "/CN=disk.yandex.ru" \
+      -addext "subjectAltName=DNS:disk.yandex.ru,DNS:yandex.ru"
 
-EXPOSE 8443
+EXPOSE 8443 51820/udp 8080 8880
 
 CMD ["xray", "-c", "/etc/xray/config.json"]

@@ -31,7 +31,8 @@
   },
   "inbounds": [
     {
-      "port": 8443,
+      "tag": "vmess-xhttp-tls",
+      "port": 8080,
       "protocol": "vmess",
       "settings": {
         "clients": [
@@ -42,17 +43,16 @@
         ]
       },
       "streamSettings": {
-        "network": "ws",
+        "network": "xhttp",
         "security": "tls",
-        "wsSettings": {
-          "path": "/api/v2/data",
-          "headers": {
-            "Host": "YOUR_SUBDOMAIN.duckdns.org"
-          }
+        "xhttpSettings": {
+          "path": "/v1/disk/resources/download",
+          "host": "disk.yandex.ru",
+          "mode": "auto"
         },
         "tlsSettings": {
-          "serverName": "YOUR_SUBDOMAIN.duckdns.org",
-          "alpn": ["h2", "http/1.1"],
+          "serverName": "disk.yandex.ru",
+          "alpn": ["h2"],
           "certificates": [
             {
               "certificateFile": "/etc/ssl/certs/xray/fullchain.pem",
@@ -64,6 +64,108 @@
           "tcpFastOpen": true,
           "tcpKeepAliveInterval": 30
         }
+      }
+    },
+    {
+      "tag": "vless-reality",
+      "port": 8443,
+      "protocol": "vless",
+      "settings": {
+        "clients": [
+          {
+            "id": "11111111-1111-1111-1111-111111111111",
+            "flow": "xtls-rprx-vision"
+          }
+        ],
+        "decryption": "none"
+      },
+      "streamSettings": {
+        "network": "tcp",
+        "security": "reality",
+        "realitySettings": {
+          "dest": "ya.ru:443",
+          "serverNames": ["ya.ru", "yandex.ru"],
+          "privateKey": "YOUR_REALITY_PRIVATE_KEY",
+          "shortIds": ["YOUR_SHORT_ID"]
+        },
+        "sockopt": {
+          "tcpFastOpen": true,
+          "tcpKeepAliveInterval": 30
+        }
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": ["http", "tls"]
+      }
+    },
+    {
+      "tag": "vless-mkcp",
+      "port": 51820,
+      "protocol": "vless",
+      "settings": {
+        "clients": [
+          {
+            "id": "11111111-1111-1111-1111-111111111111"
+          }
+        ],
+        "decryption": "none"
+      },
+      "streamSettings": {
+        "network": "kcp",
+        "kcpSettings": {
+          "mtu": 1350,
+          "tti": 20,
+          "uplinkCapacity": 50,
+          "downlinkCapacity": 100,
+          "congestion": false,
+          "readBufferSize": 2,
+          "writeBufferSize": 2,
+          "header": {
+            "type": "wechat-video"
+          },
+          "seed": "YOUR_KCP_SEED"
+        }
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": ["http", "tls"]
+      }
+    },
+    {
+      "tag": "trojan-xhttp-tls",
+      "port": 8880,
+      "protocol": "trojan",
+      "settings": {
+        "clients": [
+          {
+            "password": "YOUR_TROJAN_PASSWORD"
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "xhttp",
+        "security": "tls",
+        "xhttpSettings": {
+          "path": "/trojan-xh",
+          "mode": "auto"
+        },
+        "tlsSettings": {
+          "alpn": ["h2"],
+          "certificates": [
+            {
+              "certificateFile": "/etc/ssl/certs/xray/fullchain.pem",
+              "keyFile": "/etc/ssl/certs/xray/privkey.pem"
+            }
+          ]
+        },
+        "sockopt": {
+          "tcpFastOpen": true,
+          "tcpKeepAliveInterval": 30
+        }
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": ["http", "tls"]
       }
     }
   ],

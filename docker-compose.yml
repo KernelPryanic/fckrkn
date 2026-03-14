@@ -1,12 +1,15 @@
 services:
   xray:
     build: .
-    container_name: xray-vmess
+    container_name: xray
     restart: unless-stopped
     environment:
       - TZ=UTC
     ports:
-      - "443:8443"
+      - "8443:8443"
+      - "51820:51820/udp"
+      - "8080:8080"
+      - "8880:8880"
     volumes:
       - ./config.json:/etc/xray/config.json:ro
     logging:
